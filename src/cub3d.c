@@ -73,20 +73,20 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-t_data	square_img(int width, int height, int color, void *mlx)
-{
-	t_data	sqr;
-	int		x;
-	int		y;
+// t_data	square_img(int width, int height, int color, void *mlx)
+// {
+// 	t_data	sqr;
+// 	int		x;
+// 	int		y;
 
-	x = -1;
-	sqr.img = mlx_new_image(mlx, width, height);
-	sqr.addr = mlx_get_data_addr(sqr.img, &sqr.bpp, &sqr.line_len, &sqr.endian);
-	while (++x < width)
-	{
-		y = -1;
-		while (++y < height)
-			my_mlx_pixel_put(&sqr, x, y, color);
-	}	
-	return (sqr);
-}
+// 	x = -1;
+// 	sqr.img = mlx_new_image(mlx, width, height);
+// 	sqr.addr = mlx_get_data_addr(sqr.img, &sqr.bpp, &sqr.line_len, &sqr.endian);
+// 	while (++x < width)
+// 	{
+// 		y = -1;
+// 		while (++y < height)
+// 			my_mlx_pixel_put(&sqr, x, y, color);
+// 	}	
+// 	return (sqr);
+// }
