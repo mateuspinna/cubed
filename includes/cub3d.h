@@ -75,7 +75,7 @@ if the data inside it is correct!\n"
 # define DIR_CHARS "NSEW"
 /* _______________________CONSTANTS___________________________ */
 
-# define MINIMAP_SCALE 0.2
+# define MINIMAP_SCALE 1
 # define TILE_SIZE 32
 # define PI 3.14159265
 # define TWO_PI 6.28318530
@@ -134,6 +134,20 @@ typedef struct s_setup
 	int			states[4];
 }	t_setup;	
 
+typedef struct s_rays
+{
+	float	rayAngle;
+	float	wallHitX;
+	float	wallHitY;
+	float	distance;
+	int		wasHitVertical;
+	int		isRayFacingUp;
+	int		isRayFacingDown;
+	int		isRayFacingRight;
+	int		isRayFacingLeft;
+	int		wallHitContent;
+}	t_rays;
+
 /* _______________________Functions_________________________ */
 
 // error handling
@@ -161,6 +175,9 @@ void		render_floor_celling(t_setup *set);
 // player moviment
 void		move_player(t_setup *set);
 int			is_wall(int x, int y, t_setup *set);
+
+//Raycasting
+void		dda(t_setup *set, float distance);
 
 // array utils
 int			array_size(char **array);
