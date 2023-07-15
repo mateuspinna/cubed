@@ -26,12 +26,33 @@ int	is_wall(int x, int y, t_setup *set)
 	return (0);
 }
 
+void	check_states(t_setup *set)
+{
+	set->player.turn_direction = 0;
+	if (set->states[0] || set->states[1])
+	{
+		if (set->states[0] && !set->states[1])
+			set->player.turn_direction = 1;
+		else if (!set->states[0] && set->states[1])
+			set->player.turn_direction = -1;
+	}
+	set->player.walk_direction = 0;
+	if (set->states[2] || set->states[3])
+	{
+		if (set->states[2] && !set->states[3])
+			set->player.walk_direction = 1;
+		else if (!set->states[2] && set->states[3])
+			set->player.walk_direction = -1;
+	}
+}
+
 void	move_player(t_setup *set)
 {
 	float	move_step;
 	float	new_posx;
 	float	new_posy;
 
+	check_states(set);
 	move_step = set->player.walk_direction * set->player.move_speed;
 	set->player.rotation_angle += set->player.turn_direction
 		* set->player.rotation_speed;

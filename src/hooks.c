@@ -19,33 +19,39 @@ int	key_event(int keycode, t_setup *set)
 		mlx_destroy_window(set->mlx, set->mlx_win);
 		exit(EXIT_FAILURE);
 	}
-	if (keycode == R_KEY)
-		set->player.turn_direction = 1;
-	else if (keycode == L_KEY)
-		set->player.turn_direction = -1;
-	else if (keycode == U_KEY)
-		set->player.walk_direction = 1;
-	else if (keycode == D_KEY)
-		set->player.walk_direction = -1;
-	else
-		return (0);
-	set->has_changes = 1;
+	if (keycode == R_KEY || keycode == L_KEY)
+	{
+		if (keycode == R_KEY)
+			set->states[0] = 1;
+		else
+			set->states[1] = 1;
+	}
+	if (keycode == U_KEY || keycode == D_KEY)
+	{
+		if (keycode == U_KEY)
+			set->states[2] = 1;
+		else
+			set->states[3] = 1;
+	}
 	return (0);
 }
 
 int	key_event_release(int keycode, t_setup *set)
 {
-	if (keycode == R_KEY)
-		set->player.turn_direction = 0;
-	else if (keycode == L_KEY)
-		set->player.turn_direction = 0;
-	else if (keycode == U_KEY)
-		set->player.walk_direction = 0;
-	else if (keycode == D_KEY)
-		set->player.walk_direction = 0;
-	else
-		return (0);
-	set->has_changes = 0;
+	if (keycode == R_KEY || keycode == L_KEY)
+	{
+		if (keycode == R_KEY)
+			set->states[0] = 0;
+		else
+			set->states[1] = 0;
+	}
+	if (keycode == U_KEY || keycode == D_KEY)
+	{
+		if (keycode == U_KEY)
+			set->states[2] = 0;
+		else
+			set->states[3] = 0;
+	}
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: vsergio <vsergio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 17:48:11 by vsergio           #+#    #+#             */
-/*   Updated: 2023/05/21 15:52:13 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/07/15 10:11:07 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ typedef struct s_setup
 	t_data		frame;
 	t_map_info	map_data;
 	t_player	player;
-	int			has_changes;
+	int			states[4];
 }	t_setup;	
 
 /* _______________________Functions_________________________ */

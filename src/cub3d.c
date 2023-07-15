@@ -14,12 +14,10 @@
 
 int	render_next_frame(t_setup *set)
 {
-	if (set->has_changes)
-	{
-		move_player(set);
-		render_floor_celling(set);
-		render_minimap(set);
-	}
+	move_player(set);
+	render_floor_celling(set);
+	render_minimap(set);
+	printf("REENDERIZEI\n");
 	return (0);
 }
 
@@ -32,7 +30,10 @@ void	start_game(t_setup *set)
 	win_height = set->map_data.win_height;
 	set->mlx = mlx_init();
 	set->mlx_win = mlx_new_window(set->mlx, win_width, win_height, CUB);
-	set->has_changes = 1;
+	set->states[0] = 0;
+	set->states[1] = 0;
+	set->states[2] = 0;
+	set->states[3] = 0;
 	mlx_do_key_autorepeatoff(set->mlx);
 	mlx_hook(set->mlx_win, 2, 1L << 0, key_event, set);
 	mlx_hook(set->mlx_win, 3, 2L << 0, key_event_release, set);
@@ -55,7 +56,7 @@ void	init_setup(t_setup *set)
 	set->player.turn_direction = 0;
 	set->player.walk_direction = 0;
 	set->player.rotation_angle = PI / 2;
-	set->player.move_speed = 0.2;
+	set->player.move_speed = 0.1;
 	set->player.rotation_speed = 0.4 * (PI / 180);
 }
 
