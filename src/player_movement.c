@@ -12,16 +12,14 @@
 
 #include "cub3d.h"
 
-int	is_wall(int x, int y, t_setup *set)
+int	is_wall(int x, int y, char **map, float posy)
 {
-	int	pre_posy;
+	int	coordinate_y;
 
-	pre_posy = floor(set->player.posy / TILE_SIZE);
-	if (set->map_data.map[x][pre_posy] == '1'
-			|| set->map_data.map[x][pre_posy] == ' ')
+	coordinate_y = floor(posy / TILE_SIZE);
+	if (map[x][coordinate_y] == '1' || map[x][coordinate_y] == ' ')
 		return (1);
-	if (set->map_data.map[x][y] == '1'
-			|| set->map_data.map[x][y] == ' ')
+	if (map[x][y] == '1' || map[x][y] == ' ')
 		return (1);
 	return (0);
 }
@@ -51,6 +49,8 @@ void	move_player(t_setup *set)
 	float	move_step;
 	float	new_posx;
 	float	new_posy;
+	int		posx_on_map;
+	int		posy_on_map;
 
 	check_states(set);
 	move_step = set->player.walk_direction * set->player.move_speed;
@@ -58,7 +58,9 @@ void	move_player(t_setup *set)
 		* set->player.rotation_speed;
 	new_posx = set->player.posx + (cos(set->player.rotation_angle) * move_step);
 	new_posy = set->player.posy + (sin(set->player.rotation_angle) * move_step);
-	if (!is_wall(floor(new_posx / TILE_SIZE), floor(new_posy / TILE_SIZE), set))
+	posx_on_map = floor(new_posx / TILE_SIZE);
+	posy_on_map = floor(new_posy / TILE_SIZE);
+	if (!is_wall(posx_on_map, posy_on_map, set->map_data.map, set->player.posy))
 	{
 		set->player.posx = new_posx;
 		set->player.posy = new_posy;

@@ -17,46 +17,36 @@ int	key_event(int keycode, t_setup *set)
 	if (keycode == ESC)
 	{
 		mlx_destroy_window(set->mlx, set->mlx_win);
+		clean_map(&set->map_data);
 		exit(EXIT_FAILURE);
 	}
-	if (keycode == R_KEY || keycode == L_KEY)
-	{
-		if (keycode == R_KEY)
-			set->states[0] = 1;
-		else
-			set->states[1] = 1;
-	}
-	if (keycode == U_KEY || keycode == D_KEY)
-	{
-		if (keycode == U_KEY)
-			set->states[2] = 1;
-		else
-			set->states[3] = 1;
-	}
+	if (keycode == R_KEY)
+		set->states[0] = 1;
+	if (keycode == L_KEY)
+		set->states[1] = 1;
+	if (keycode == U_KEY)
+		set->states[2] = 1;
+	if (keycode == D_KEY)
+		set->states[3] = 1;
 	return (0);
 }
 
 int	key_event_release(int keycode, t_setup *set)
 {
-	if (keycode == R_KEY || keycode == L_KEY)
-	{
-		if (keycode == R_KEY)
-			set->states[0] = 0;
-		else
-			set->states[1] = 0;
-	}
-	if (keycode == U_KEY || keycode == D_KEY)
-	{
-		if (keycode == U_KEY)
-			set->states[2] = 0;
-		else
-			set->states[3] = 0;
-	}
+	if (keycode == R_KEY)
+		set->states[0] = 0;
+	if (keycode == L_KEY)
+		set->states[1] = 0;
+	if (keycode == U_KEY)
+		set->states[2] = 0;
+	if (keycode == D_KEY)
+		set->states[3] = 0;
 	return (0);
 }
 
 int	close_win(t_setup *set)
 {
 	mlx_destroy_window(set->mlx, set->mlx_win);
+	clean_map(&set->map_data);
 	exit(1);
 }

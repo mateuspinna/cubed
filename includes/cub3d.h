@@ -174,7 +174,7 @@ void		render_floor_celling(t_setup *set);
 
 // player moviment
 void		move_player(t_setup *set);
-int			is_wall(int x, int y, t_setup *set);
+int			is_wall(int x, int y, char **map, float posy);
 
 //Raycasting
 void		dda(t_setup *set, float distance);

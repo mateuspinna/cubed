@@ -30,10 +30,6 @@ void	start_game(t_setup *set)
 	win_height = set->map_data.win_height;
 	set->mlx = mlx_init();
 	set->mlx_win = mlx_new_window(set->mlx, win_width, win_height, CUB);
-	set->states[0] = 0;
-	set->states[1] = 0;
-	set->states[2] = 0;
-	set->states[3] = 0;
 	mlx_do_key_autorepeatoff(set->mlx);
 	mlx_hook(set->mlx_win, 2, 1L << 0, key_event, set);
 	mlx_hook(set->mlx_win, 3, 2L << 0, key_event_release, set);
@@ -47,6 +43,10 @@ void	init_setup(t_setup *set)
 	int	half_tile;
 
 	half_tile = TILE_SIZE / 2;
+	set->states[0] = 0;
+	set->states[1] = 0;
+	set->states[2] = 0;
+	set->states[3] = 0;
 	set->map_data.win_height = set->map_data.row_nbr * TILE_SIZE;
 	set->map_data.win_width = set->map_data.col_nbr * TILE_SIZE;
 	set->player.posx = (set->map_data.player_posx * TILE_SIZE) + half_tile;
