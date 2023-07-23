@@ -41,8 +41,8 @@ void	render_player(t_setup *set)
 	int	player_x;
 	int	player_y;
 
-	player_x = set->player.posy * MINIMAP_SCALE;
-	player_y = set->player.posx * MINIMAP_SCALE;
+	player_x = set->player.posx * MINIMAP_SCALE;
+	player_y = set->player.posy * MINIMAP_SCALE;
 	x = -1;
 	while (++x < set->player.width)
 	{

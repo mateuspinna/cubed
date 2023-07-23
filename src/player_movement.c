@@ -19,9 +19,9 @@ int	is_wall(int x, int y, t_setup *set)
 
 	map = set->map_data.map;
 	coordinate_y = floor(set->player.posy/ TILE_SIZE);
-	if (map[x][coordinate_y] == '1' || map[x][coordinate_y] == ' ')
+	if (map[coordinate_y][x] == '1' || map[coordinate_y][x] == ' ')
 		return (1);
-	if (map[x][y] == '1' || map[x][y] == ' ')
+	if (map[y][x] == '1' || map[y][x] == ' ')
 		return (1);
 	return (0);
 }

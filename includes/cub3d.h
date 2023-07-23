@@ -79,7 +79,6 @@ if the data inside it is correct!\n"
 # define TILE_SIZE 32
 # define PI 3.14159265
 # define TWO_PI 6.28318530
-/* # define FOV_ANGLE (60 * (PI / 180)) */
 
 /* ________________________Structs_________________________ */
 
@@ -180,7 +179,10 @@ int			is_wall(int x, int y, t_setup *set);
 
 //Raycasting
 void		cast_all_rays(t_setup *set);
+
+//DDA
 void		dda(t_setup *set, float distance);
+void		dda_points(t_setup *set, float x, float y, float distance, float rayAngle);
 
 // array utils
 int			array_size(char **array);
