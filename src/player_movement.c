@@ -12,11 +12,13 @@
 
 #include "cub3d.h"
 
-int	is_wall(int x, int y, char **map, float posy)
+int	is_wall(int x, int y, t_setup *set)
 {
 	int	coordinate_y;
+	char	**map;
 
-	coordinate_y = floor(posy / TILE_SIZE);
+	map = set->map_data.map;
+	coordinate_y = floor(set->player.posy/ TILE_SIZE);
 	if (map[x][coordinate_y] == '1' || map[x][coordinate_y] == ' ')
 		return (1);
 	if (map[x][y] == '1' || map[x][y] == ' ')
@@ -60,7 +62,7 @@ void	move_player(t_setup *set)
 	new_posy = set->player.posy + (sin(set->player.rotation_angle) * move_step);
 	posx_on_map = floor(new_posx / TILE_SIZE);
 	posy_on_map = floor(new_posy / TILE_SIZE);
-	if (!is_wall(posx_on_map, posy_on_map, set->map_data.map, set->player.posy))
+	if (!is_wall(posx_on_map, posy_on_map, set))
 	{
 		set->player.posx = new_posx;
 		set->player.posy = new_posy;

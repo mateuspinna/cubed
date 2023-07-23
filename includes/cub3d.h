@@ -124,16 +124,6 @@ typedef struct s_player
 	float	rotation_speed;	
 }	t_player;
 
-typedef struct s_setup
-{
-	void		*mlx;
-	void		*mlx_win;
-	t_data		frame;
-	t_map_info	map_data;
-	t_player	player;
-	int			states[4];
-}	t_setup;	
-
 typedef struct s_rays
 {
 	float	rayAngle;
@@ -147,6 +137,18 @@ typedef struct s_rays
 	int		isRayFacingLeft;
 	int		wallHitContent;
 }	t_rays;
+
+typedef struct s_setup
+{
+	void		*mlx;
+	void		*mlx_win;
+	t_data		frame;
+	t_map_info	map_data;
+	t_player	player;
+	int			states[4];
+	t_rays		*rays;
+}	t_setup;	
+
 
 /* _______________________Functions_________________________ */
 
@@ -174,9 +176,10 @@ void		render_floor_celling(t_setup *set);
 
 // player moviment
 void		move_player(t_setup *set);
-int			is_wall(int x, int y, char **map, float posy);
+int			is_wall(int x, int y, t_setup *set);
 
 //Raycasting
+void		cast_all_rays(t_setup *set);
 void		dda(t_setup *set, float distance);
 
 // array utils

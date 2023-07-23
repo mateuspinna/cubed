@@ -1,0 +1,6 @@
+{
+	MLX
+	Memcheck:Leak
+	obj:/usr/lib/x86_64-linux-gnu/libX11.so.6.4.0
+	fun:.*
+}

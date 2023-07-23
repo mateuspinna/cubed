@@ -53,8 +53,6 @@ void	render_player(t_setup *set)
 				- (set->player.height / 2), rgb_color(255, 0, 0));
 	}
 	dda(set, 32 * MINIMAP_SCALE);
-	mlx_put_image_to_window(set->mlx, set->mlx_win, set->frame.img, 0, 0);
-	mlx_destroy_image(set->mlx, set->frame.img);
 }
 
 void	set_color(int *color, int i, int j, t_setup *set)

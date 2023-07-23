@@ -67,4 +67,12 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY:		all clean fclean re test
+map1:		
+			make all
+			valgrind --suppressions=mlx.supp --leak-check=full --show-leak-kinds=all ./cub3D maps/map1.cub
+
+map2:		
+			amke all
+			valgrind --suppressions=mlx.supp --leak-check=full --show-leak-kinds=all ./cub3D maps/map2.cub
+
+.PHONY:		all clean fclean re map1 map2

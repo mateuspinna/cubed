@@ -15,11 +15,7 @@
 int	key_event(int keycode, t_setup *set)
 {
 	if (keycode == ESC)
-	{
-		mlx_destroy_window(set->mlx, set->mlx_win);
-		clean_map(&set->map_data);
-		exit(EXIT_FAILURE);
-	}
+		close_win(set);
 	if (keycode == R_KEY)
 		set->states[0] = 1;
 	if (keycode == L_KEY)
@@ -48,5 +44,6 @@ int	close_win(t_setup *set)
 {
 	mlx_destroy_window(set->mlx, set->mlx_win);
 	clean_map(&set->map_data);
-	exit(1);
+	free(set->rays);
+	exit(EXIT_FAILURE);
 }

@@ -17,7 +17,10 @@ int	render_next_frame(t_setup *set)
 	move_player(set);
 	render_floor_celling(set);
 	render_minimap(set);
-	printf("Render\n");
+	mlx_put_image_to_window(set->mlx, set->mlx_win, set->frame.img, 0, 0);
+	cast_all_rays(set);
+	usleep(3000);
+	mlx_destroy_image(set->mlx, set->frame.img);
 	return (0);
 }
 
@@ -56,8 +59,9 @@ void	init_setup(t_setup *set)
 	set->player.turn_direction = 0;
 	set->player.walk_direction = 0;
 	set->player.rotation_angle = PI / 2;
-	set->player.move_speed = 0.3;
-	set->player.rotation_speed = 0.4 * (PI / 180);
+	set->player.move_speed = 1;
+	set->player.rotation_speed = 1 * (PI / 180);
+	set->rays = NULL;
 }
 
 int	main(int argc, char **argv)
