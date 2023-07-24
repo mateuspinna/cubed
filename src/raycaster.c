@@ -29,9 +29,9 @@ float hypotenuse(float x1, float y1, float x2, float y2) {
 
 void cast_ray(float rayAngle, int id, t_setup *set)
 {
-	set->rays[id].isRayFacingDown = rayAngle > 0 && rayAngle < 180;
+	set->rays[id].isRayFacingDown = rayAngle > 0 && rayAngle < PI;
 	set->rays[id].isRayFacingUp = !set->rays[id].isRayFacingDown;
-	set->rays[id].isRayFacingRight = rayAngle > 0.5 || rayAngle > 1.5 * PI;
+	set->rays[id].isRayFacingRight = rayAngle < 0.5 * PI || rayAngle > 1.5 * PI;
 	set->rays[id].isRayFacingLeft = !set->rays[id].isRayFacingRight;
 
 	float	xintercept;
@@ -39,21 +39,22 @@ void cast_ray(float rayAngle, int id, t_setup *set)
 	float	xstep;
 	float	ystep;
 
+	printf("R %i\n", set->rays[id].isRayFacingRight);
 	// HORIZONTAL 
 	yintercept = floor(set->player.posy / TILE_SIZE) * TILE_SIZE;
 	if (set->rays[id].isRayFacingDown)
 		yintercept += TILE_SIZE;
 	
 	xintercept = set->player.posx + (yintercept - set->player.posy) / tan(rayAngle);
-
+	printf(" x %f y %f\n", xintercept, yintercept);
 	ystep = TILE_SIZE;
 	if (set->rays[id].isRayFacingUp)
-		ystep *= 1;
+		ystep *= -1;
 
 	xstep = TILE_SIZE / tan(rayAngle);
-	if (set->rays[id].isRayFacingLeft && xstep)
+	if (set->rays[id].isRayFacingLeft && xstep > 0)
 		xstep *= -1;
-	if (set->rays[id].isRayFacingRight && xstep)
+	if (set->rays[id].isRayFacingRight && xstep < 0)
 		xstep *= -1;
 
 	int		foundHorizontalWallHit = 0;
@@ -69,15 +70,15 @@ void cast_ray(float rayAngle, int id, t_setup *set)
 
 	while (next_hor_toach_x >= 0 && next_hor_toach_x <= set->map_data.win_width && next_hor_toach_y >= 0 &&  next_hor_toach_y <= set->map_data.win_height)
 	{
-		float xToCheck = next_hor_toach_x;
-		float yToCheck = next_hor_toach_y;
+		int	xToCheck = (int)floor(next_hor_toach_x / TILE_SIZE);
+		int	yToCheck = (int)floor(next_hor_toach_y / TILE_SIZE);
 		if (set->rays[id].isRayFacingUp)
 			yToCheck -= 1;
-		if (set->map_data.map[(int)floor(yToCheck / TILE_SIZE)][(int)floor(xToCheck / TILE_SIZE)] == '1')
+		if (set->map_data.map[yToCheck][xToCheck] == '1')
 		{
 			horizontalWallHitX = next_hor_toach_x;
 			horizontalWallHitY = next_hor_toach_y;
-			horizontalWallContent = '1';
+			//horizontalWallContent = '1';
 			foundHorizontalWallHit = 1;
 			break;
 		}
@@ -110,12 +111,12 @@ void cast_ray(float rayAngle, int id, t_setup *set)
 
 	xstep = TILE_SIZE;
 	if (set->rays[id].isRayFacingLeft)
-		xstep *= 1;
+		xstep *= -1;
 
 	ystep = TILE_SIZE * tan(rayAngle);
-	if (set->rays[id].isRayFacingUp && ystep)
+	if (set->rays[id].isRayFacingUp && ystep > 0)
 		ystep *= -1;
-	if (set->rays[id].isRayFacingDown && ystep)
+	if (set->rays[id].isRayFacingDown && ystep < 0)
 		ystep *= -1;
 
 	next_ver_toach_x = xintercept;
@@ -123,16 +124,15 @@ void cast_ray(float rayAngle, int id, t_setup *set)
 
 	while (next_ver_toach_x >= 0 && next_ver_toach_x <= set->map_data.win_width && next_ver_toach_y >= 0 &&  next_ver_toach_y <= set->map_data.win_height)
 	{
-		float xToCheck = next_ver_toach_x;
-		float yToCheck = next_ver_toach_y;
+		int	xToCheck = (int)floor(next_ver_toach_x / TILE_SIZE);
+		int	yToCheck = (int)floor(next_ver_toach_y / TILE_SIZE);
 		if (set->rays[id].isRayFacingLeft)
 			xToCheck -= 1;
-		printf("x %f y %f\n", xToCheck / TILE_SIZE, yToCheck / TILE_SIZE);
-		if (set->map_data.map[(int)floor(yToCheck / TILE_SIZE)][(int)floor(xToCheck / TILE_SIZE)] == '1')
+		if (set->map_data.map[yToCheck][xToCheck] == '1')
 		{
 			verticalWallHitX = next_ver_toach_x;
 			verticalWallHitY = next_ver_toach_y;
-			verticalWallContent = set->map_data.map[(int)floor(xToCheck / TILE_SIZE)][(int)floor(yToCheck / TILE_SIZE)];
+			//verticalWallContent = '1';
 			foundVerticalWallHit = 1;
 			break;
 		}
@@ -152,7 +152,6 @@ void cast_ray(float rayAngle, int id, t_setup *set)
 	
 	if (distance1 > distance2)
 		distance1 = distance2;
-	printf("%f %f\n",distance1, distance2);
 	dda_points(set, 0, 0, distance1, rayAngle);
 
 	}	
@@ -161,8 +160,8 @@ void	cast_all_rays(t_setup *set)
 {
 	float	fov;
 	float	rayAngle;
-	int	 strip_id;
-	int	 ray_number;
+	int		strip_id;
+	int		ray_number;
 
 	ray_number = set->map_data.win_width;
 	fov = 60 * PI / 180;
