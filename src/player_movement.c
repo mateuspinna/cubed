@@ -12,18 +12,72 @@
 
 #include "cub3d.h"
 
-int	is_wall(int x, int y, t_setup *set)
+void	move_sides(t_setup *set)
 {
-	int	pre_posy;
+	float	side_x;
+	float	side_y;
 
-	pre_posy = floor(set->player.posy / TILE_SIZE);
-	if (set->map_data.map[x][pre_posy] == '1'
-			|| set->map_data.map[x][pre_posy] == ' ')
-		return (1);
-	if (set->map_data.map[x][y] == '1'
-			|| set->map_data.map[x][y] == ' ')
-		return (1);
-	return (0);
+	side_x = set->player.dir_y * set->player.mov_speed;
+	side_y = set->player.dir_x * set->player.mov_speed;
+	if (set->states[4] && !set->states[5])
+	{
+		side_y *= -1;
+		if (set->map_data.map[(int)(set->player.posy + side_y)]
+			[(int)(set->player.posx + side_x)] != '1')
+		{
+			set->player.posx += side_x;
+			set->player.posy += side_y;
+		}
+	}
+	if (!set->states[4] && set->states[5])
+	{
+		side_x *= -1;
+		if (set->map_data.map[(int)(set->player.posy + side_y)]
+			[(int)(set->player.posx + side_x)] != '1')
+		{
+			set->player.posx += side_x;
+			set->player.posy += side_y;
+		}
+	}
+}
+
+void	move_validation(t_setup *set)
+{
+	int		x;
+	int		y;
+	int		newx;
+	int		newy;
+	float	move_rate;
+
+	x = (int)set->player.posx;
+	y = (int)set->player.posy;
+	move_rate = set->player.mov_speed * set->player.walk_direction;
+	newx = (int)(set->player.posx + set->player.dir_x * move_rate);
+	newy = (int)(set->player.posy + set->player.dir_y * move_rate);
+	if (set->map_data.map[y][newx] != '1')
+		set->player.posx += set->player.dir_x * move_rate;
+	if (set->map_data.map[newy][x] != '1')
+		set->player.posy += set->player.dir_y * move_rate;
+	move_sides(set);
+}
+
+void	turn_player(t_setup *set)
+{
+	float	old_dir_x;
+	float	old_plane_x;
+	float	turn_rate;
+
+	old_dir_x = set->player.dir_x;
+	old_plane_x = set->player.plane_x;
+	turn_rate = set->player.rot_speed * set->player.turn_direction;
+	set->player.dir_x = set->player.dir_x * cos(turn_rate)
+		- set->player.dir_y * sin(turn_rate);
+	set->player.dir_y = old_dir_x * sin(turn_rate)
+		+ set->player.dir_y * cos(turn_rate);
+	set->player.plane_x = set->player.plane_x * cos(turn_rate)
+		- set->player.plane_y * sin(turn_rate);
+	set->player.plane_y = old_plane_x * sin(turn_rate)
+		+ set->player.plane_y * cos(turn_rate);
 }
 
 void	check_states(t_setup *set)
@@ -48,19 +102,7 @@ void	check_states(t_setup *set)
 
 void	move_player(t_setup *set)
 {
-	float	move_step;
-	float	new_posx;
-	float	new_posy;
-
 	check_states(set);
-	move_step = set->player.walk_direction * set->player.move_speed;
-	set->player.rotation_angle += set->player.turn_direction
-		* set->player.rotation_speed;
-	new_posx = set->player.posx + (cos(set->player.rotation_angle) * move_step);
-	new_posy = set->player.posy + (sin(set->player.rotation_angle) * move_step);
-	if (!is_wall(floor(new_posx / TILE_SIZE), floor(new_posy / TILE_SIZE), set))
-	{
-		set->player.posx = new_posx;
-		set->player.posy = new_posy;
-	}
+	turn_player(set);
+	move_validation(set);
 }

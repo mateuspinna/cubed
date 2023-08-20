@@ -34,64 +34,19 @@ void	render_floor_celling(t_setup *set)
 	}
 }
 
-void	render_player(t_setup *set)
-{
-	int	x;
-	int	y;
-	int	player_x;
-	int	player_y;
+void	render_strip(int x, t_rays *ray, t_setup *set, int *tex)
+{	
+	float	rate;
+	float	tex_pos;
+	int		tex_y;
 
-	player_x = set->player.posy * MINIMAP_SCALE;
-	player_y = set->player.posx * MINIMAP_SCALE;
-	x = -1;
-	while (++x < set->player.width)
+	rate = (float) 64 / ray->line_height;
+	tex_pos = (ray->draw_start - set->map_data.win_height / 2
+			+ ray->line_height / 2) * rate;
+	while (ray->draw_start <= ray->draw_end)
 	{
-		y = -1;
-		while (++y < set->player.height)
-			my_mlx_pixel_put(&set->frame, x + player_x
-				- (set->player.width / 2), y + player_y
-				- (set->player.height / 2), rgb_color(255, 0, 0));
+		tex_y = (int)tex_pos & (T_HEIGHT - 1);
+		tex_pos += rate;
+		my_mlx_pixel_put(&set->frame, x, ray->draw_start++, tex[tex_y]);
 	}
-	dda(set, 32 * MINIMAP_SCALE);
-	mlx_put_image_to_window(set->mlx, set->mlx_win, set->frame.img, 0, 0);
-	mlx_destroy_image(set->mlx, set->frame.img);
-}
-
-void	set_color(int *color, int i, int j, t_setup *set)
-{
-	if (set->map_data.map[i][j] == '1' || set->map_data.map[i][j] == ' ')
-		*color = 0;
-	else if (set->map_data.player_posy == j && set->map_data.player_posx == i)
-		*color = rgb_color(255, 255, 0);
-	else
-		*color = rgb_color(255, 255, 255);
-}
-
-void	render_minimap(t_setup *set)
-{
-	int		i;
-	int		j;
-	int		x;
-	int		y;
-	int		color;
-
-	i = -1;
-	while (++i < set->map_data.row_nbr)
-	{
-		j = -1;
-		while (++j < set->map_data.col_nbr)
-		{
-			set_color(&color, i, j, set);
-			x = -1;
-			while (++x < TILE_SIZE * MINIMAP_SCALE)
-			{
-				y = -1;
-				while (++y < TILE_SIZE * MINIMAP_SCALE)
-					my_mlx_pixel_put(&set->frame,
-						x + (j * TILE_SIZE * MINIMAP_SCALE),
-						y + (i * TILE_SIZE * MINIMAP_SCALE), color);
-			}
-		}
-	}
-	render_player(set);
 }

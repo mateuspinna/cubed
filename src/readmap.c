@@ -54,13 +54,13 @@ int	save_path(t_map_info *map_data, char *line)
 	path_add = ft_substr(ft_strrchr(line, ' ') + 1, 0, len - 1);
 	fd = open(path_add, O_RDONLY);
 	if (!ft_strncmp(line, "NO", 2) && line[2] == ' ' && !map_data->n_path)
-		map_data->n_path = ft_substr(path_add, 0, ft_strlen(path_add) - 1);
+		map_data->n_path = ft_substr(path_add, 0, ft_strlen(path_add));
 	else if (!ft_strncmp(line, "SO", 2) && line[2] == ' ' && !map_data->s_path)
-		map_data->s_path = ft_substr(path_add, 0, ft_strlen(path_add) - 1);
+		map_data->s_path = ft_substr(path_add, 0, ft_strlen(path_add));
 	else if (!ft_strncmp(line, "WE", 2) && line[2] == ' ' && !map_data->w_path)
-		map_data->w_path = ft_substr(path_add, 0, ft_strlen(path_add) - 1);
+		map_data->w_path = ft_substr(path_add, 0, ft_strlen(path_add));
 	else if (!map_data->e_path && line[2] == ' ')
-		map_data->e_path = ft_substr(path_add, 0, ft_strlen(path_add) - 1);
+		map_data->e_path = ft_substr(path_add, 0, ft_strlen(path_add));
 	else
 	{
 		free(path_add);

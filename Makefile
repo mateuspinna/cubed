@@ -10,7 +10,7 @@ CC = cc
 
 SRC = check_arguments.c  cub3d.c hooks.c mlx_utils.c error_handling.c readmap.c\
 	  utils.c array_utils.c map_validation.c flood_fill.c render_functions.c player_movement.c\
-	  raycaster.c
+	  raycaster.c texture_functions.c
 
 SRCS = $(addprefix src/, $(SRC))
 
@@ -24,7 +24,7 @@ INCLUDES = -I./includes
 
 ifeq ($(shell uname), Linux)
 LIBS	= -Lmlx_linux -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz includes/libft/libft.a
-MLX_O	= -I/usr/include -lmlx_Linux -O3
+MLX_O	= -I/usr/include -O3
 MLX_DIR	= mlx_linux
 else
 LIBS	= -Lmlx -lmlx -framework OpenGL -framework AppKit includes/libft/libft.a
@@ -39,7 +39,7 @@ LIBFT = ./includes/libft/libft.a
 # Compile Rules 
 
 %.o: %.c
-			@${CC} -c ${FLAGS} ${INCLUDES} ${MLX_O} $< -o $@
+			@${CC} -O0 -c ${FLAGS} ${INCLUDES} ${MLX_O} $< -o $@
 
 all:		$(NAME)
 
@@ -67,4 +67,12 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY:		all clean fclean re test
+map1:		
+			make all
+			valgrind --suppressions=mlx.supp --leak-check=full --show-leak-kinds=all ./cub3D maps/map1.cub
+
+map2:		
+			amke all
+			valgrind --suppressions=mlx.supp --leak-check=full --show-leak-kinds=all ./cub3D maps/map2.cub
+
+.PHONY:		all clean fclean re map1 map2

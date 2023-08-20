@@ -32,8 +32,8 @@ int	check_map_content(char **map, t_map_info *info)
 			if (ft_strchr(DIR_CHARS, map[i][j]))
 			{
 				info->orientation = map[i][j];
-				info->player_posx = i - 1;
-				info->player_posy = j - 1;
+				info->player_posx = j - 1;
+				info->player_posy = i - 1;
 				flags[1]++;
 			}
 		}
